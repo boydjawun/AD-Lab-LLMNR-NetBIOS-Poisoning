@@ -1,5 +1,5 @@
-# Building AD Lab, LLMNR/NBT-NS Poisioning, and NTLMv2 Cracking w / Hashcat + JohnTheRipper
-I am conducting a demonstration of LLMNR/NBT-NS poisoning against a vulnerable Active Directory environment in a virtualized setting using VMware. For this project, I provisioned and configured virtual machines running Kali Linux, Windows 11, and Windows Server 2022.
+# Building AD Lab, LLMNR/NetBIOS Poisioning, and NTLMv2 Cracking w / Hashcat + JohnTheRipper
+I am conducting a demonstration of LLMNR/NetBIOS poisoning against a vulnerable Active Directory environment in a virtualized setting using VMware. For this project, I provisioned and configured virtual machines running Kali Linux, Windows 11, and Windows Server 2022.
 The setup process began with the installation and configuration of Active Directory Domain Services (AD DS) on the Windows Server 2022 instance. This included promoting the server to a domain controller and creating a test user account.
 Following the successful configuration of the AD environment, I executed the LLMNR/NBT-NS poisoning attack from the Kali Linux system. The attack successfully induced the target Windows 11 client to authenticate using NTLMv2, allowing me to capture the corresponding NTLMv2 hash for the previously created domain user.
 The primary objective of this project—demonstrating the feasibility of LLMNR/NBT-NS poisoning and successfully capturing an NTLMv2 hash in a controlled Active Directory environment—was achieved. This exercise highlights the risks associated with legacy name resolution protocols in Windows networks and underscores the importance of disabling LLMNR and NBT-NS where possible.
@@ -77,55 +77,55 @@ All of these services are started but stops once the machine is cut off and need
 - The victim connects to the attacker's machine instead of the intended one
 - If the resource requires Authentication(common for file shares via SMB) The victim automatically sends NTLM creds(username + hashed password, often NTLMv2)
 
-# LLMNR/NBT-NS Poisining Project
+# LLMNR/NetBIOS Poisining Project
 - Start off on Windows Server 2022 to File and Storage Services, then click shares (the picture below shows a share I've already created)
 
 <img width="965" height="373" alt="image" src="https://github.com/user-attachments/assets/459270bd-7af2-473e-b5a7-0400333a4329" />
 
 - Open your files and go to the local C: drive on your computer and create a folder called hackme
 
-![Screenshot 2025-12-16 102257.png](Screenshot_2025-12-16_102257.png)
+![Screenshot 2025-12-16 102257.png](images/Screenshot_2025-12-16_102257.png)
 
 - Back on the Server Manager screen, click tasks in the top right corner, then click new share in the dropdown menu
 
-![Screenshot 2025-12-16 102710.png](Screenshot_2025-12-16_102710.png)
+![Screenshot 2025-12-16 102710.png](images/Screenshot_2025-12-16_102710.png)
 
 - Select SMB Share quick, then Next >
 
-![Screenshot 2025-12-16 103037.png](Screenshot_2025-12-16_103037.png)
+![Screenshot 2025-12-16 103037.png](images/Screenshot_2025-12-16_103037.png)
 
 - Select the type a custom path for your share location
 
-![Screenshot 2025-12-16 103231.png](Screenshot_2025-12-16_103231.png)
+![Screenshot 2025-12-16 103231.png](images/Screenshot_2025-12-16_103231.png)
 
 - Select the hackme folder that was made on the C: drive, then click Next>
 
-![Screenshot 2025-12-16 103411.png](Screenshot_2025-12-16_103411.png)
+![Screenshot 2025-12-16 103411.png](images/Screenshot_2025-12-16_103411.png)
 
 - In the Share Name section, we are able to see all of or share information including the share’s local and remote path locations
 
-![Screenshot 2025-12-16 103625.png](Screenshot_2025-12-16_103625.png)
+![Screenshot 2025-12-16 103625.png](images/Screenshot_2025-12-16_103625.png)
 
 - After clicking Next> click the box to enable access based enumeration
 
-![Screenshot 2025-12-16 104116.png](Screenshot_2025-12-16_104116.png)
+![Screenshot 2025-12-16 104116.png](images/Screenshot_2025-12-16_104116.png)
 
 - In the Permissions section you can see that Users and Administrators have both read and write permissions
 
-![Screenshot 2025-12-16 104339.png](Screenshot_2025-12-16_104339.png)
+![Screenshot 2025-12-16 104339.png](images/Screenshot_2025-12-16_104339.png)
 
 - Now click create
 
-![Screenshot 2025-12-16 104515.png](Screenshot_2025-12-16_104515.png)
+![Screenshot 2025-12-16 104515.png](images/Screenshot_2025-12-16_104515.png)
 
 - Share was successfully created
 
-![Screenshot 2025-12-16 104640.png](Screenshot_2025-12-16_104640.png)
+![Screenshot 2025-12-16 104640.png](images/Screenshot_2025-12-16_104640.png)
 
 - Now we head back to Windows 11 VM to add that share we just created. Log in as created user
 - Head to this PC in the file explorer and select to map a network drive (The drive was already mapped from the previous time I ran the project)
     
-    ![image.png](image.png)
+    ![image.png](images/image.png)
     
 - Enter a drive and enter the name of the server and the folder for the share and click finish
 
@@ -133,131 +133,131 @@ All of these services are started but stops once the machine is cut off and need
 
 - Now we have access to the JAWUNSERVER hackme share
 
-![image.png](image%202.png)
+![image.png](images/image%202.png)
 
 - Go to Kali and open the root terminal to locate [Responder.py](http://Responder.py) then cd into it. The responder picks up network traffic
 
-![image.png](image%203.png)
+![image.png](images/image%203.png)
 
 - While still in the responder folder run the command python [Responder.py](http://Responder.py) -I eth0 -wd to start the listener
 
-![image.png](image%204.png)
+![image.png](images/image%204.png)
 
 - Notice how the LLMNR and NBT-NS poisiners are on and also the servers that [Responder.py](http://Responder.py) is listening on
 - Now head back to the windows VM logged in as a created user and head to the hackme share
 
-![image.png](image%205.png)
+![image.png](images/image%205.png)
 
 - The folder is empty but the responder captures this instance
 
-![image.png](image%206.png)
+![image.png](images/image%206.png)
 
 - The response by the Responder on the Linux VM
 
-![image.png](image%207.png)
+![image.png](images/image%207.png)
 
 - Open a new tab in the Linux VM terminal and get your IP address
 
-![image.png](image%208.png)
+![image.png](images/image%208.png)
 
 - Place the IP address in the path name box
 
-![image.png](image%209.png)
+![image.png](images/image%209.png)
 
 - You are not going to be able to get into it but
 
-![image.png](image%2010.png)
+![image.png](images/image%2010.png)
 
 - There is the hash sent to the the Linux Terminal for user bfranks
 - Includes the Domain name(JAWUN), the username(bfranks), and the user’s NTLMv2 hash then skips the hashes that have already been captured
 
-![image.png](image%2011.png)
+![image.png](images/image%2011.png)
 
 - Responder stores the hashes in /usr/share/responder/logs
 
-![image.png](image%2012.png)
+![image.png](images/image%2012.png)
 
 - Now copy the entire hash including the user and domain
 
-![image.png](image%2013.png)
+![image.png](images/image%2013.png)
 
 - Navigate to the root folder and create a file to post the hash in, Nano is used here
 
-![image.png](image%2014.png)
+![image.png](images/image%2014.png)
 
 - Now to cracking the hashes
 - Using Hashcat on Kali Linux to find the password in the hashes.txt file created with the hashes from the LLMNR poisioning
 - After typing hashcat —help see, in the Network Protocol section, that NetNTLMv2 is the is the protocol that is going to be used to crack this hash becasuse this is a NTLMv2 hash
 
-![image.png](image%2015.png)
+![image.png](images/image%2015.png)
 
 - Type in the terminal
     - hashcat -m 5600 hashes.txt /usr/share/wordlists/rockyou.txt
     - -m 5600 specifies the protocol to use when cracking the hash
     - Also use a good password list, in this example rockyou.txt.gz is used. A built in wordlist on Kali Linux
     
-    ![image.png](image%2016.png)
+    ![image.png](images/image%2016.png)
     
 - It didnt work, so we found another alternative
 
-![image.png](image%2017.png)
+![image.png](images/image%2017.png)
 
 - Head back to the Users profile on Windows 11 and open the command prompt and Run as Administrator
 - For the Username I used Administrator and password is the password you set for your account when setting up Windows 11
 
-![image.png](image%2018.png)
+![image.png](images/image%2018.png)
 
 - Head to hashcat’s official website and download the binaires which will include a .7z file
 
-![image.png](image%2019.png)
+![image.png](images/image%2019.png)
 
 - Extract the file, my have to use 7zip
 
-![image.png](image%2020.png)
+![image.png](images/image%2020.png)
 
 - Go back to Kali and get the hash from the responder logs to copy it in the notepad on Windows
 
-![image.png](image%2021.png)
+![image.png](images/image%2021.png)
 
 - type notepad in the Commad Prompt to open the Notepad app. Paste the hash in there and save the file as Hashes.txt
 
-![image.png](image%2022.png)
+![image.png](images/image%2022.png)
 
 - Using notepad wouldn’t so I started a Python HTTP server and used wget on the Windows Machine to retrieve the hashes.txt file with Powershell running as Administrator
 
-![image.png](image%2023.png)
+![image.png](images/image%2023.png)
 
-![image.png](image%2024.png)
+![image.png](images/image%2024.png)
 
 - View the file using the type command in Windows
 
-![image.png](image%2025.png)
+![image.png](images/image%2025.png)
 
 - I have multiple hashes of the same profile saved into this file from accessing the file and requesting Kali machine multiple times. So I chose to edit the file with notepad. I used Resolve-Path -path “hashes.txt” to reveal the location of hashes.txt. Then Used notepad.exe and the file path to edit the hashes.txt file
 
-![image.png](image%2026.png)
+![image.png](images/image%2026.png)
 
 - After deleting the extra hashes, I click save to save the the file under the same name and in the dame location
 
-![image.png](image%2027.png)
+![image.png](images/image%2027.png)
 
 - Hashes.txt has been edited now. There is only one username, domain name, and hash for that user
 - Below I use Reslove-Path -path “hashes.txt” to find the path of hashes.txt in Powershell running as Administrator
 
-![image.png](image%2028.png)
+![image.png](images/image%2028.png)
 
 - Now go back to the commnd prompt and run as administrator
 
-![image.png](image%2029.png)
+![image.png](images/image%2029.png)
 
 - Navigate back to the created user
 
-![image.png](image%2030.png)
+![image.png](images/image%2030.png)
 
 - Now with the command prompt running as Administrator run hashcat.exe
 
 # Results
-It turns out that I was not able to crack the hash using rockyou.txt or milw0rm-dictionary.txt wordlists. I also used both JohnTheRipper and Hashcat on the Windows 11 VM and on my personal Windows 11 system and still could not crack the NTLMv2 hash. Maybe I could crack it with a bigger or more robust wordlist? The password I set for that user also was 14 characters long so maybe that had something to do with it?
+It turns out that I was not able to crack the hash using rockyou.txt or milw0rm-dictionary.txt wordlists. I also used both JohnTheRipper and Hashcat on the Windows 11 VM and on my personal Windows 11 system and still could not crack the NTLMv2 hash
 
 # Mitigation
 - Disable LLMNR, select "TURN OFF MULTICAST NAME RESOLUTION" under Local Computer Policy > Computer Configuration >Administrative Templates > Network > DNS Client in the Group Policy Editor
