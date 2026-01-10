@@ -265,5 +265,5 @@ It turns out that I was not able to crack the hash using rockyou.txt or milw0rm-
 
 If a company must use or connot disable LLMNR/NBT-NS the best thing to do is:
 - Require network access control
-- Require stong passwords. The more complex the password the harder it is for the attacker to crack the hash. I think what the situation was here because I think I set a pretty robust password for my created windows user :)
+- Require stong passwords. The more complex the password the harder it is for the attacker to crack the hash
   
