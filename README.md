@@ -1,4 +1,7 @@
-# Building AD Lab, LLMNR/NetBIOS Poisioning, and NTLMv2 Cracking w / Hashcat + JohnTheRipper
+# 🔬Building AD Lab, LLMNR/NetBIOS Poisioning, and NTLMv2 Cracking w / Hashcat + JohnTheRipper
+![towfiqu-barbhuiya-FnA5pAzqhMM-unsplash](https://github.com/user-attachments/assets/b31dd01b-7190-4d20-85e7-dbd24ea13388)
+
+# Description
 I am conducting a demonstration of LLMNR/NetBIOS poisoning against a vulnerable Active Directory environment in a virtualized setting using VMware. For this project, I provisioned and configured virtual machines running Kali Linux, Windows 11, and Windows Server 2022.
 The setup process began with the installation and configuration of Active Directory Domain Services (AD DS) on the Windows Server 2022 instance. This included promoting the server to a domain controller and creating a test user account.
 Following the successful configuration of the AD environment, I executed the LLMNR/NBT-NS poisoning attack from the Kali Linux system. The attack successfully induced the target Windows 11 client to authenticate using NTLMv2, allowing me to capture the corresponding NTLMv2 hash for the previously created domain user.
