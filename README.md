@@ -1,4 +1,4 @@
-# 🔓Building AD Lab, LLMNR/NetBIOS Poisioning, and NTLMv2 Cracking w / Hashcat + JohnTheRipper
+# 🔓Building AD Lab, LLMNR/NetBIOS Poisioning, and NTLMv2 Cracking w/Hashcat + JohnTheRipper
 ![towfiqu-barbhuiya-FnA5pAzqhMM-unsplash](https://github.com/user-attachments/assets/b31dd01b-7190-4d20-85e7-dbd24ea13388)
 
 # Description
