@@ -2,7 +2,7 @@
 I am conducting a demonstration of LLMNR/NetBIOS poisoning against a vulnerable Active Directory environment in a virtualized setting using VMware. For this project, I provisioned and configured virtual machines running Kali Linux, Windows 11, and Windows Server 2022.
 The setup process began with the installation and configuration of Active Directory Domain Services (AD DS) on the Windows Server 2022 instance. This included promoting the server to a domain controller and creating a test user account.
 Following the successful configuration of the AD environment, I executed the LLMNR/NBT-NS poisoning attack from the Kali Linux system. The attack successfully induced the target Windows 11 client to authenticate using NTLMv2, allowing me to capture the corresponding NTLMv2 hash for the previously created domain user.
-The primary objective of this project—demonstrating the feasibility of LLMNR/NBT-NS poisoning and successfully capturing an NTLMv2 hash in a controlled Active Directory environment—was achieved. This exercise highlights the risks associated with legacy name resolution protocols in Windows networks and underscores the importance of disabling LLMNR and NBT-NS where possible.
+The primary objective of this project—demonstrating the feasibility of LLMNR/NBT-NS poisoning and successfully capturing an NTLMv2 hash in a controlled Active Directory environment—was achieved.
 
 # Prerequisites + Tools Used
 - VMware(Virtualization Software)
@@ -17,7 +17,7 @@ The primary objective of this project—demonstrating the feasibility of LLMNR/N
 - Create a share on the Windows 2022 Server and access the share using a created user for the Windows 11 Virtual Machine
 - Use Responder to recieve the hash from 2022 Windows Server that includes user's Username, Domain Name, and the users password encrypted with NTLMv2 hashes
   
-# Responder.py(Upadted Impacket)
+# Responder.py(Upadated Impacket)
 1. Although Kali Linux already comes with impacket we install a new version of impacket for kali
     - get rid of all impacket associated files
     - apt purge **impacket**
@@ -197,64 +197,6 @@ All of these services are started but stops once the machine is cut off and need
     - Also use a good password list, in this example rockyou.txt.gz is used. A built in wordlist on Kali Linux
     
     ![image.png](images/image%2016.png)
-    
-- It didnt work, so we found another alternative
-
-![image.png](images/image%2017.png)
-
-- Head back to the Users profile on Windows 11 and open the command prompt and Run as Administrator
-- For the Username I used Administrator and password is the password you set for your account when setting up Windows 11
-
-![image.png](images/image%2018.png)
-
-- Head to hashcat’s official website and download the binaires which will include a .7z file
-
-![image.png](images/image%2019.png)
-
-- Extract the file, my have to use 7zip
-
-![image.png](images/image%2020.png)
-
-- Go back to Kali and get the hash from the responder logs to copy it in the notepad on Windows
-
-![image.png](images/image%2021.png)
-
-- type notepad in the Commad Prompt to open the Notepad app. Paste the hash in there and save the file as Hashes.txt
-
-![image.png](images/image%2022.png)
-
-- Using notepad wouldn’t so I started a Python HTTP server and used wget on the Windows Machine to retrieve the hashes.txt file with Powershell running as Administrator
-
-![image.png](images/image%2023.png)
-
-![image.png](images/image%2024.png)
-
-- View the file using the type command in Windows
-
-![image.png](images/image%2025.png)
-
-- I have multiple hashes of the same profile saved into this file from accessing the file and requesting Kali machine multiple times. So I chose to edit the file with notepad. I used Resolve-Path -path “hashes.txt” to reveal the location of hashes.txt. Then Used notepad.exe and the file path to edit the hashes.txt file
-
-![image.png](images/image%2026.png)
-
-- After deleting the extra hashes, I click save to save the the file under the same name and in the dame location
-
-![image.png](images/image%2027.png)
-
-- Hashes.txt has been edited now. There is only one username, domain name, and hash for that user
-- Below I use Reslove-Path -path “hashes.txt” to find the path of hashes.txt in Powershell running as Administrator
-
-![image.png](images/image%2028.png)
-
-- Now go back to the commnd prompt and run as administrator
-
-![image.png](images/image%2029.png)
-
-- Navigate back to the created user
-
-![image.png](images/image%2030.png)
-
-- Now with the command prompt running as Administrator run hashcat.exe
 
 # Results
 It turns out that I was not able to crack the hash using rockyou.txt or milw0rm-dictionary.txt wordlists. I also used both JohnTheRipper and Hashcat on the Windows 11 VM and on my personal Windows 11 system and still could not crack the NTLMv2 hash
