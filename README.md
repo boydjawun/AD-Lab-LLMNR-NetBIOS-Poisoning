@@ -236,4 +236,16 @@ It turns out that I was not able to crack the hash using rockyou.txt or milw0rm-
 If a company must use, or connot disable LLMNR/NBT-NS, the best thing to do is:
 - Require network access control
 - Require strong passwords. The more complex the password the harder it is for the attacker to crack the hash!
+
+ ## ⚠️ Disclaimer
+
+**For educational and research purposes only.**
+
+Do NOT use any code or technique in this repository against systems you do not own or have explicit written permission to test.
+
+Unauthorized use is illegal and may result in criminal charges.
+
+The author(s) are not liable for any misuse or damage caused by this project.
+
+
   
